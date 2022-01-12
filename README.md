@@ -1,13 +1,139 @@
-# Dapper in ASP.NET Core with Repository Pattern
-Let's Learn Dapper with ASP. NET Core!
-In this article, we will talk about the basics of Dapper and it's seamless implementation in ASP. NET Core.
+It has dapper orm with repository pattern and unit of work.
+It has the methods of close/open car door or light and add it to the basket.
+First you need to execute the sql script below to create the database.
 
-Topics covered.
-1. What is Dapper?
-2. Implementation of Dapper.
-3. Repository Pattern and Unit of Work
-4. Simple and Clean Architecture ( Onion )
-5. Testing with Swagger.
-
-Read more here :
-https://www.codewithmukesh.com/blog/dapper-in-aspnet-core/
+~~~~
+USE [master]
+GO
+CREATE DATABASE [Cars]
+GO
+ALTER DATABASE [Cars] SET COMPATIBILITY_LEVEL = 140
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Cars].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Cars] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Cars] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Cars] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Cars] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Cars] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Cars] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Cars] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Cars] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Cars] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Cars] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Cars] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Cars] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Cars] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Cars] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Cars] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Cars] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Cars] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Cars] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Cars] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Cars] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Cars] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Cars] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Cars] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [Cars] SET  MULTI_USER 
+GO
+ALTER DATABASE [Cars] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Cars] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Cars] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Cars] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Cars] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Cars] SET QUERY_STORE = OFF
+GO
+USE [Cars]
+GO
+/****** Object:  Table [dbo].[Baskets]    Script Date: 12.01.2022 22:02:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Baskets](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CarId] [int] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[Price] [decimal](18, 2) NOT NULL,
+	[AddedBy] [varchar](70) NOT NULL,
+	[AddedOn] [datetime] NOT NULL,
+	[ModifiedBy] [varchar](70) NULL,
+	[ModifiedOn] [datetime] NULL,
+ CONSTRAINT [PK_Carts] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Cars]    Script Date: 12.01.2022 22:02:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Cars](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Brand] [varchar](60) NOT NULL,
+	[Model] [varchar](40) NOT NULL,
+	[Description] [varchar](250) NOT NULL,
+	[IsLightOn] [bit] NOT NULL,
+	[IsDoorOn] [bit] NOT NULL,
+	[Price] [decimal](18, 2) NOT NULL,
+	[AddedOn] [datetime] NOT NULL,
+	[ModifiedOn] [datetime] NULL,
+	[AddedBy] [varchar](70) NOT NULL,
+	[ModifiedBy] [varchar](70) NULL,
+ CONSTRAINT [PK_Cars] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [BrandModelUniqueIndex]    Script Date: 12.01.2022 22:02:13 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [BrandModelUniqueIndex] ON [dbo].[Cars]
+(
+	[Brand] ASC,
+	[Model] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Baskets]  WITH CHECK ADD  CONSTRAINT [FK_Baskets_Cars] FOREIGN KEY([CarId])
+REFERENCES [dbo].[Cars] ([Id])
+GO
+ALTER TABLE [dbo].[Baskets] CHECK CONSTRAINT [FK_Baskets_Cars]
+GO
+USE [master]
+GO
+ALTER DATABASE [Cars] SET  READ_WRITE 
+GO
