@@ -35,7 +35,6 @@ namespace Dapper.Infrastructure.Repository
             connection.Open();
             var result = await connection.ExecuteAsync(sql, new { Id = id });
             return result;
-
         }
 
         public async Task<IReadOnlyList<Basket>> GetAllAsync()
