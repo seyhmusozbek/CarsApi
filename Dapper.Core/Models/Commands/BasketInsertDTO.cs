@@ -13,5 +13,9 @@ namespace Dapper.Core.Models.Commands
         [Required]
         [StringLength(70)]
         public string AddedBy { get; set; }
+        [Required]
+        [StringLength(150)]
+        public string Description { get; set; }
+
     }
 }

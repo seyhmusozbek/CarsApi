@@ -1,0 +1,27 @@
+<h1 id="tableLabel">Basket Details</h1>
+
+<p *ngIf="!baskets"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="baskets">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>AddedBy</th>
+      <th>AddedOn</th>
+      <th>#</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let basket of baskets; let i=index">
+      <td>{{ basket.description }}</td>
+      <td>{{ basket.quantity }}</td>
+      <td>{{ basket.price | number }} €</td>
+      <td>{{ basket.addedBy }}</td>
+      <td>{{ basket.addedOn }}</td>
+      <td><a (click)="deleteRow(i, basket.id)" class="btn btn-danger">Delete</a></td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="length == 0 && baskets" class="alert alert-danger text-center">There is no item added to basket!</div>

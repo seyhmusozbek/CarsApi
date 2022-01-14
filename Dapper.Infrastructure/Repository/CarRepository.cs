@@ -64,7 +64,7 @@ namespace Dapper.Infrastructure.Repository
         public async Task<int> UpdateAsync(Car entity)
         {
             entity.ModifiedOn = DateTime.Now;
-            var sql = "UPDATE Cars SET Brand=ISNULL(@Brand,Brand), Model=ISNULL(@Model,Model), Description=ISNULL(@Description,Description), IsLightOn=ISNULL(@IsLightOn,IsLightOn), IsDoorOn=ISNULL(@IsDoorOn,IsDoorOn), Price=ISNULL(@Price,Price), ModifiedOn=ISNULL(@ModifiedOn,ModifiedOn), ModifiedBy=ISNULL(@ModifiedBy,ModifiedBy) WHERE Id = @Id";
+            var sql = "UPDATE Cars SET Brand=ISNULL(@Brand,Brand), Model=ISNULL(@Model,Model), Description=ISNULL(@Description,Description), IsLightOn=ISNULL(@IsLightOn,IsLightOn), IsDoorOn=ISNULL(@IsDoorOn,IsDoorOn), ModifiedOn=ISNULL(@ModifiedOn,ModifiedOn), ModifiedBy=ISNULL(@ModifiedBy,ModifiedBy) WHERE Id = @Id";
             using var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
 
             connection.Open();

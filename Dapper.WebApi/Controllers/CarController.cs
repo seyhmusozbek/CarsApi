@@ -46,7 +46,7 @@ namespace Dapper.WebApi.Controllers
             return Ok(data);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateLight(CarUpdateDTO carDTO)
+        public async Task<IActionResult> Update(CarUpdateDTO carDTO)
         {
             var car = _mapper.Map<Car>(carDTO);
             var data = await _unitOfWork.Cars.UpdateAsync(car);

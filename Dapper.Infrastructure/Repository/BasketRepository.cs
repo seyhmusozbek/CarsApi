@@ -19,7 +19,7 @@ namespace Dapper.Infrastructure.Repository
         public async Task<int> AddAsync(Basket entity)
         {
             entity.AddedOn = DateTime.Now;
-            var sql = "Insert into Baskets (CarId, Quantity, Price, AddedBy, AddedOn)VALUES(@CarId,@Quantity,@Price,@AddedBy,@AddedOn)";
+            var sql = "Insert into Baskets (CarId, Quantity, Price, AddedBy, AddedOn, Description)VALUES(@CarId,@Quantity,@Price,@AddedBy,@AddedOn,@Description)";
             using var connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
             
             connection.Open();

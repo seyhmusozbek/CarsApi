@@ -1,0 +1,31 @@
+<h1>Cars</h1>
+
+
+
+
+<p *ngIf="!cars"><em>Loading...</em></p>
+
+<div *ngIf="cars" class="row">
+    <div *ngFor="let car of cars" class="card" style="width: 18rem;">
+      <img class="card-img-top" src="https://dictionary.cambridge.org/tr/images/thumb/car_noun_001_02258.jpg?version=5.0.203" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{car.brand}}-{{car.model}}</h5>
+        <p class="card-text">{{car.description}}.</p>
+        <p class="card-text">{{car.price | number}} €</p>
+        <a
+        [ngClass]="[car.isDoorOn?'btn btn-success':'btn btn-danger', isLoading?'disabled':'']"
+        (click)="updateCar(car, false)"
+        >Car Door {{car.isDoorOn?'Opened':'Closed'}}</a>
+        <a
+        (click)="updateCar(car, true)"
+        [ngClass]="[car.isLightOn?'btn btn-warning':'btn btn-secondary', isLoading?'disabled':'']"
+        >Car Light {{car.isLightOn?'Opened':'Closed'}}</a>
+      </div>
+      <div class="card-footer">
+        <a
+        [ngClass]="[isLoading?'disabled':'', 'btn btn-primary']"
+        (click)="addToBasket(car)"
+        >Add To Basket</a>
+      </div>
+    </div>
+</div>
